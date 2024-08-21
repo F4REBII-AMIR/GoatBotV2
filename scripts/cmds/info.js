@@ -1,39 +1,33 @@
 const fs = require('fs');
 const moment = require('moment-timezone');
-const NepaliDate = require('nepali-date');
 
 module.exports = {
   config: {
     name: "info",
     version: "1.0",
-    author: "deepam",
+    author: "cliff",
+    countDown: 20,
     role: 0,
-    cooldown: 5,
-    shortDescription: {
-      vi: "",
-      en: "Sends information about the bot and admin."
-    },
-    longDescription: {
-      vi: "",
-      en: "Sends information about the bot and admin."
-    },
-    category: "utility",
-    guide: {
-      en: "{pn}"
-    },
+    shortDescription: { vi: "", en: "" },
+    longDescription: { vi: "", en: "" },
+    category: "owner",
+    guide: { en: "" },
     envConfig: {}
   },
-
-  onStart: async function ({ message, prefix }) {
-    const botPrefix = prefix; // Use the provided bot prefix
-    const authorName = "Dee Pam";
-    const authorFB = "https://www.facebook.com/deepamdajuuu";
-
-    const now = moment().tz('Asia/Kathmandu');
+  onStart: async function ({ message }) {
+    const botName = "𝐃𝐀𝐍𝐈 𝐌𝐀𝐋𝐈𝐊";
+    const botPrefix = "#";
+    const authorName = "𝐃𝐀𝐍𝐈 𝐆";
+    const ownAge = "18";
+    const teamName = "𝐃𝐈𝐋 𝐖𝐀𝐋𝐘";
+    const authorFB = "https://www.facebook.com/100083009085825";
+    const authorInsta = "Thead469";
+    const tikTok = "tiktok.com/DOHNDTY RHO";
+    const urls = JSON.parse(fs.readFileSync('cliff.json'));
+    const link = urls[Math.floor(Math.random() * urls.length)];
+    const now = moment().tz('Asia/Jakarta');
     const date = now.format('MMMM Do YYYY');
     const time = now.format('h:mm:ss A');
-
-
     const uptime = process.uptime();
     const seconds = Math.floor(uptime % 60);
     const minutes = Math.floor((uptime / 60) % 60);
@@ -41,31 +35,26 @@ module.exports = {
     const days = Math.floor(uptime / (60 * 60 * 24));
     const uptimeString = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
 
-    const additionalText = "";
-
-    // Combine the bot information and additional text in a single message
-message.reply(`======[𝗕𝗼𝘁 𝗶𝗻𝗳𝗼:]======
-𝗕𝗼𝘁 𝗽𝗿𝗲𝗳𝗶𝘅: ${botPrefix}
-
-𝗕𝗼𝘁 𝗻𝗮𝗺𝗲 : Gilgamesh UltraBot
-
-𝗢𝘄𝗻𝗲𝗿: ${authorName}
- 
-𝗙𝗮𝗰𝗲𝗯𝗼𝗼𝗸: [${authorName}] ${authorFB}
-
-𝗗𝗮𝘁𝗲: ${date}
-
-𝗧𝗶𝗺𝗲: ${time}
-
-𝗨𝗽𝘁𝗶𝗺𝗲: ${uptimeString}
-      
-      ${additionalText}
-    `);
+    message.reply({
+      body: `《  Bot & Owner Info 》
+\Name: ${botName}
+\Bot Prefix: ${botPrefix}
+\owner: ${authorName}
+\age : ${ownAge}
+\Facebook: ${authorFB}
+\Instagram: ${authorInsta}
+\TikTok: ${tikTok}
+\Datee: ${date}
+\Time: ${time}
+\Team: ${teamName}
+\Uptime: ${uptimeString}
+\===============`,
+      attachment: await global.utils.getStreamFromURL(link)
+    });
   },
-
-  onChat: async function ({ event, message, getLang, prefix }) {
+  onChat: async function ({ event, message, getLang }) {
     if (event.body && event.body.toLowerCase() === "info") {
-      this.onStart({ message, prefix });
+      this.onStart({ message });
     }
   }
 };
